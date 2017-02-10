@@ -1,0 +1,1 @@
+edit='docker run -it --rm -v $(pwd):/mnt/host_fs benb88/vim_in_docker'

@@ -1,0 +1,48 @@
+#! /bin/bash
+
+echo "##############################################"
+echo "# Script para INICIAR SERVICIO de docker en:  #"
+echo "# Desarrollado por:                          #"
+echo "# Guillermo Trespalacios                     #"
+echo "# /media/dockerimagenes                      #"
+echo "##############################################"
+
+
+
+echo "Parar servicio docker"
+sudo systemctl stop docker
+
+
+
+echo "Editar docker.service"
+sudo sed -i 's/^ExecStart/#PorDefecto ExecStart/g' /lib/systemd/system/docker.service
+sudo sed -i 's/^#Personalizado ExecStart/ExecStart/g' /lib/systemd/system/docker.service
+
+
+
+echo "Montar discos"
+sudo mount /dev/sdb /mnt/dki
+sudo mount /dev/sdc /mnt/cdf
+
+
+
+echo "Reiniciar servicios"
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+#sudo systemctl restart docker.socket
+
+echo "Iniciar comandos"
+#echo "vim", esta linea se agregó a .bashrc para que se ejecute al iniciar el usuario
+#alias edit='docker run -it --rm -v $(pwd):/mnt/host_fs benb88/vim_in_docker'
+
+
+echo "---------- Imagenes ----------"
+
+docker images
+
+
+echo ""
+echo "---------- Containers ----------"
+docker ps -a
+
+

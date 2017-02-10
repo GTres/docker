@@ -1,0 +1,40 @@
+#! /bin/bash
+
+echo "################################################"
+echo "# Script para  PARAR SERVICIO de docker en:  #"
+echo "#  /var/lib                                    #"
+echo "################################################"
+
+
+
+echo "Parar servicio docker"
+sudo systemctl stop docker
+
+
+
+echo "Editar docker.service"
+sudo sed -i 's/^ExecStart/#Personalizado ExecStart/g' /lib/systemd/system/docker.service
+sudo sed -i 's/^#PorDefecto ExecStart/ExecStart/g' /lib/systemd/system/docker.service
+
+
+
+echo "Desmontar discos"
+sudo umount /mnt/dki
+sudo umount /mnt/cdf
+
+
+
+echo "Reiniciar servicios"
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+#sudo systemctl restart docker.socket
+
+
+
+echo "---------- Imagenes ----------"
+docker images
+
+
+echo
+echo "---------- Containers ----------"
+docker ps -a
